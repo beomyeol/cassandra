@@ -350,18 +350,20 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         if (!epState.isAlive())
             return;
 
-        logger.debug("Convicting {} with status {} - alive {}", endpoint, getGossipStatus(epState), epState.isAlive());
+        logger.info("Convicting {} with status {} - alive {}", endpoint, getGossipStatus(epState), epState.isAlive());
 
 
         if (isShutdown(endpoint))
         {
+            logger.info("Marking as shutdown {}", endpoint);
             markAsShutdown(endpoint);
-            logger.info("Removing node {} host id = {}", endpoint, getHostId(endpoint).toString());
-            StorageService.instance.removeNode(getHostId(endpoint).toString());
         }
         else
         {
+            logger.info("Marking as dead {}", endpoint);
             markDead(endpoint, epState);
+            logger.info("Removing node {} host id = {}", endpoint, getHostId(endpoint).toString());
+            StorageService.instance.removeNode(getHostId(endpoint).toString());
         }
     }
 
