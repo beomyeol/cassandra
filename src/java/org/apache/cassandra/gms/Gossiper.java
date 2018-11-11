@@ -360,8 +360,8 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         else
         {
             logger.info("Removing node {} host id = {}", endpoint, getHostId(endpoint).toString());
+            markDead(endpoint, epState);
             StorageService.instance.removeNode(getHostId(endpoint).toString());
-//            markDead(endpoint, epState);
         }
     }
 
