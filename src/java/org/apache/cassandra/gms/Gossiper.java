@@ -378,7 +378,7 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         markDead(endpoint, epState);
         FailureDetector.instance.forceConviction(endpoint);
 
-        logger.info("submitting a removal task of node {} host id = {}", endpoint, getHostId(endpoint).toString());
+        logger.info("Submitting a removal task of node {} host id = {}", endpoint, getHostId(endpoint).toString());
         executor.submit(() -> StorageService.instance.removeNode(getHostId(endpoint).toString()));
     }
 
