@@ -456,6 +456,7 @@
           <dependency groupId="com.github.ben-manes.caffeine" artifactId="caffeine" version="2.2.6" />
           <dependency groupId="org.jctools" artifactId="jctools-core" version="1.2.1"/>
           <dependency groupId="org.ow2.asm" artifactId="asm" version="5.0.4" />
+          <dependency groupId="org.apache.zookeeper" artifactId="zookeeper" version="3.4.12" />
         </dependencyManagement>
         <developer id="adelapena" name="Andres de la Peña"/>
         <developer id="alakshman" name="Avinash Lakshman"/>
@@ -529,6 +530,7 @@
         <dependency groupId="org.openjdk.jmh" artifactId="jmh-generator-annprocess"/>
         <dependency groupId="net.ju-n.compile-command-annotations" artifactId="compile-command-annotations"/>
         <dependency groupId="org.apache.ant" artifactId="ant-junit" version="1.9.4" />
+        <dependency groupId="org.apache.zookeeper" artifactId="zookeeper" version="3.4.12" />
       </artifact:pom>
       <!-- this build-deps-pom-sources "artifact" is the same as build-deps-pom but only with those
            artifacts that have "-source.jar" files -->
@@ -644,6 +646,7 @@
         <dependency groupId="com.github.ben-manes.caffeine" artifactId="caffeine" />
         <dependency groupId="org.jctools" artifactId="jctools-core"/>
         <dependency groupId="org.ow2.asm" artifactId="asm" />
+        <dependency groupId="org.apache.zookeeper" artifactId="zookeeper"/>
       </artifact:pom>
       <artifact:pom id="thrift-pom"
                     artifactId="cassandra-thrift"

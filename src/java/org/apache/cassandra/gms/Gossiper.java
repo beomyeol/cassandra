@@ -141,6 +141,8 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
 
     private volatile long lastProcessedMessageAt = System.currentTimeMillis();
 
+    private final LeaderElection leaderElection;
+
     private class GossipTask implements Runnable
     {
         public void run()
@@ -219,6 +221,7 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         {
             MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
             mbs.registerMBean(this, new ObjectName(MBEAN_NAME));
+            leaderElection = new LeaderElection();
         }
         catch (Exception e)
         {
@@ -379,8 +382,18 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         markDead(endpoint, epState);
         FailureDetector.instance.forceConviction(endpoint);
 
-        logger.info("Submitting a removal task of node {} host id = {}", endpoint, getHostId(endpoint).toString());
-        removal_executor.submit(() -> StorageService.instance.removeNode(getHostId(endpoint).toString()));
+        try
+        {
+            if (leaderElection.isLeader())
+            {
+                logger.info("Submitting a removal task of node {} host id = {}", endpoint, getHostId(endpoint).toString());
+                removal_executor.submit(() -> StorageService.instance.removeNode(getHostId(endpoint).toString()));
+            }
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
