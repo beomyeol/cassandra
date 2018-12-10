@@ -70,6 +70,7 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
     public static final String MBEAN_NAME = "org.apache.cassandra.net:type=Gossiper";
 
     private static final DebuggableScheduledThreadPoolExecutor executor = new DebuggableScheduledThreadPoolExecutor("GossipTasks");
+    private static final DebuggableScheduledThreadPoolExecutor removal_executor = new DebuggableScheduledThreadPoolExecutor("RemovalTasks");
 
     static final ApplicationState[] STATES = ApplicationState.values();
     static final List<String> DEAD_STATES = Arrays.asList(VersionedValue.REMOVING_TOKEN, VersionedValue.REMOVED_TOKEN,
@@ -379,7 +380,7 @@ public class Gossiper implements IFailureDetectionEventListener, GossiperMBean
         FailureDetector.instance.forceConviction(endpoint);
 
         logger.info("Submitting a removal task of node {} host id = {}", endpoint, getHostId(endpoint).toString());
-        executor.submit(() -> StorageService.instance.removeNode(getHostId(endpoint).toString()));
+        removal_executor.submit(() -> StorageService.instance.removeNode(getHostId(endpoint).toString()));
     }
 
     /**
